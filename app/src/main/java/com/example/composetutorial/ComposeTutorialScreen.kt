@@ -1,12 +1,32 @@
 package com.example.composetutorial
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.composetutorial.data.ContactData
 import com.example.composetutorial.uinterface.screens.ConversationsScreen
 import com.example.composetutorial.uinterface.screens.ConversationScreen
 import com.example.composetutorial.data.SampleData
@@ -16,20 +36,76 @@ enum class ComposeTutorialScreen() {
     Conversation
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ComposeTutorialAppBar(
+    currentScreen: ComposeTutorialScreen,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit,
+    title: String
+){
+    TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            titleContentColor = MaterialTheme.colorScheme.primary,
+        ),
+        title = {
+            Text(title)
+        },
+        navigationIcon = {
+            if(canNavigateBack){
+                IconButton(navigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Navigation button"
+                    )
+                }
+            }
+        },
+        modifier = Modifier.height(80.dp)
+    )
+}
 
 @Composable
 fun ComposeTutorialApp(
     navController: NavHostController = rememberNavController()
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = ComposeTutorialScreen.Conversation.name
-        ) {
-        composable(route = ComposeTutorialScreen.Conversations.name){
-            ConversationsScreen(SampleData.conversationSample)
+
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = ComposeTutorialScreen.valueOf(
+        value = backStackEntry?.destination?.route ?: ComposeTutorialScreen.Conversations.name
+    )
+
+    Scaffold(
+        topBar = {
+            ComposeTutorialAppBar(
+                currentScreen = currentScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = { navController.navigateUp() },
+                title = currentScreen.name
+            )
         }
-        composable(route = ComposeTutorialScreen.Conversation.name){
-            ConversationScreen()
-        }
+    ) {
+            innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp)){
+                NavHost(
+                    navController = navController,
+                    startDestination = ComposeTutorialScreen.Conversations.name
+                ) {
+                    composable(route = ComposeTutorialScreen.Conversations.name){
+                        ConversationsScreen(contacts = ContactData.contactSample,onNextButtonClicked = {navController.navigate(ComposeTutorialScreen.Conversation.name)})
+                    }
+                    composable(route = ComposeTutorialScreen.Conversation.name){
+                        ConversationScreen(SampleData.conversationSample,
+                            onNextButtonClicked = {})
+                    }
+                }
+            }
+
+
     }
+
 }
