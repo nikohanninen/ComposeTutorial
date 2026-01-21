@@ -4,7 +4,18 @@ import com.example.composetutorial.uinterface.screens.Message
 
 object SampleData {
     // Sample conversation data
-    val conversationSample = listOf(
+
+    val conversationNiko = listOf(
+        Message(
+            author = "Niko",
+            body = "Hello"
+        ),
+        Message(
+            author = "Niko",
+            body = "How are you doing?"
+        ),
+    )
+    val conversationLexi = listOf(
         Message(
             "Lexi",
             "Test...Test...Test..."

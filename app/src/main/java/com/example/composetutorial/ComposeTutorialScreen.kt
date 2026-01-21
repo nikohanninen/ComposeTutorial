@@ -30,6 +30,7 @@ import com.example.composetutorial.data.ContactData
 import com.example.composetutorial.uinterface.screens.ConversationsScreen
 import com.example.composetutorial.uinterface.screens.ConversationScreen
 import com.example.composetutorial.data.SampleData
+import com.example.composetutorial.uinterface.screens.Contact
 
 enum class ComposeTutorialScreen() {
     Conversations,
@@ -76,6 +77,8 @@ fun ComposeTutorialApp(
         value = backStackEntry?.destination?.route ?: ComposeTutorialScreen.Conversations.name
     )
 
+    var selectedContact = ContactData.contactSample[0]
+
     Scaffold(
         topBar = {
             ComposeTutorialAppBar(
@@ -96,10 +99,12 @@ fun ComposeTutorialApp(
                     startDestination = ComposeTutorialScreen.Conversations.name
                 ) {
                     composable(route = ComposeTutorialScreen.Conversations.name){
-                        ConversationsScreen(contacts = ContactData.contactSample,onNextButtonClicked = {navController.navigate(ComposeTutorialScreen.Conversation.name)})
+                        ConversationsScreen(contacts = ContactData.contactSample,onNextButtonClicked = {
+
+                            navController.navigate(ComposeTutorialScreen.Conversation.name)})
                     }
                     composable(route = ComposeTutorialScreen.Conversation.name){
-                        ConversationScreen(SampleData.conversationSample,
+                        ConversationScreen(selectedContact,
                             onNextButtonClicked = {})
                     }
                 }

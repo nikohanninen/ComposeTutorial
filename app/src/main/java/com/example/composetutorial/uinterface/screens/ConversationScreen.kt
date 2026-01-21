@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composetutorial.R
+import com.example.composetutorial.data.ContactData
 import com.example.composetutorial.ui.theme.ComposeTutorialTheme
 import com.example.composetutorial.data.SampleData
 
@@ -97,12 +98,12 @@ fun MessageCard(msg: Message) {
 
 @Composable
 fun ConversationScreen(
-    messages: List<Message>,
+    contact: Contact,
     onNextButtonClicked: () -> Unit
 ) {
     Surface(color = Color.Black) {
         LazyColumn {
-            items(messages) { message ->
+            items(contact.messages) { message ->
                 MessageCard(message)
             }
         }
@@ -116,7 +117,7 @@ fun ConversationScreen(
 fun PreviewConversationScreen(){
     ComposeTutorialTheme {
         ConversationScreen(
-            SampleData.conversationSample,
+            contact = ContactData.contactSample[0],
             onNextButtonClicked = {})
     }
 }

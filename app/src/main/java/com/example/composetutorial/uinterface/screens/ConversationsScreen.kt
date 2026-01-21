@@ -54,7 +54,7 @@ fun ConversationsScreen(
 
 //}
 
-data class Contact(val name: String, val latestMessage: Message, val profilePicture: Int)
+data class Contact(val name: String, val profilePicture: Int, val messages: List<Message>)
 
 @Composable
 fun ContactCard(
@@ -66,7 +66,9 @@ fun ContactCard(
     Row(modifier = Modifier
         .padding(vertical = 16.dp)
         .fillMaxWidth()
-        .clickable {onNextButtonClicked()}) {
+        .clickable {
+
+            onNextButtonClicked()}) {
         Image(
             painter = painterResource(contact.profilePicture),
             contentDescription = "Contact profile picture",
@@ -79,7 +81,7 @@ fun ContactCard(
         )
         Column(modifier = Modifier.padding(start = 8.dp)) {
             Text(contact.name, fontSize = 22.sp, color = Color.White)
-            Text(contact.latestMessage.body, fontSize = 12.sp,
+            Text(contact.messages[0].body, fontSize = 12.sp,
                 maxLines = 1, color = Color.White)
         }
     }

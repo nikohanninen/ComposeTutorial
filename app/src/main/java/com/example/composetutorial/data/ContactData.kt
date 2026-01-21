@@ -6,8 +6,7 @@ import com.example.composetutorial.uinterface.screens.Contact
 object ContactData {
 
     val contactSample = listOf(
-        Contact("Lexi", SampleData.conversationSample[0], R.drawable.profile_picture),
-        Contact(name = "Niko", latestMessage = SampleData.conversationSample[1], profilePicture = R.drawable.niko_profilepicture),
-
+        Contact("Lexi", R.drawable.profile_picture, messages = SampleData.conversationLexi),
+        Contact(name = "Niko", profilePicture = R.drawable.niko_profilepicture, messages = SampleData.conversationNiko),
     )
 }
