@@ -27,24 +27,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.composetutorial.R
+import com.example.composetutorial.classes.Contact
+import com.example.composetutorial.classes.Message
 import com.example.composetutorial.data.ContactData
 import com.example.composetutorial.ui.theme.ComposeTutorialTheme
-import com.example.composetutorial.data.SampleData
-
-data class Message(val author: String, val body: String)
 
 @Composable
-fun MessageCard(msg: Message) {
+fun MessageCard(msg: Message, contact: Contact) {
     // Add padding around our message
     Row(
         modifier = Modifier.padding(all = 8.dp)) {
         Image(
-            painter = painterResource(R.drawable.profile_picture),
+            painter = painterResource(contact.profilePicture),
             contentDescription = "Contact profile picture",
             modifier = Modifier
                 // Set image size to 40 dp
@@ -99,16 +96,13 @@ fun MessageCard(msg: Message) {
 @Composable
 fun ConversationScreen(
     contact: Contact,
-    onNextButtonClicked: () -> Unit
+    contactClicked: () -> Unit
 ) {
-    Surface(color = Color.Black) {
         LazyColumn {
             items(contact.messages) { message ->
-                MessageCard(message)
+                MessageCard(message, contact)
             }
-        }
     }
-
 }
 
 
@@ -118,7 +112,7 @@ fun PreviewConversationScreen(){
     ComposeTutorialTheme {
         ConversationScreen(
             contact = ContactData.contactSample[0],
-            onNextButtonClicked = {})
+            contactClicked = {})
     }
 }
 
@@ -135,7 +129,7 @@ fun PreviewConversationScreen(){
 fun PreviewMessageCard() {
     ComposeTutorialTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            MessageCard(Message("Android", "Jetpack Compose"))
+            MessageCard(Message("Android", "Jetpack Compose"), ContactData.contactSample[0])
         }
     }
 }

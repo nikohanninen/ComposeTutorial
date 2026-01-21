@@ -1,6 +1,7 @@
 package com.example.composetutorial.data
 
-import com.example.composetutorial.uinterface.screens.Message
+import com.example.composetutorial.classes.Message
+
 
 object SampleData {
     // Sample conversation data
@@ -13,6 +14,19 @@ object SampleData {
         Message(
             author = "Niko",
             body = "How are you doing?"
+        ),
+        Message(
+            "Niko",
+            """List of Android versions:
+            |Android KitKat (API 19)
+            |Android Lollipop (API 21)
+            |Android Marshmallow (API 23)
+            |Android Nougat (API 24)
+            |Android Oreo (API 26)
+            |Android Pie (API 28)
+            |Android 10 (API 29)
+            |Android 11 (API 30)
+            |Android 12 (API 31)""".trim()
         ),
     )
     val conversationLexi = listOf(

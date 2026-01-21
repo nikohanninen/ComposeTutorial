@@ -1,7 +1,6 @@
 package com.example.composetutorial.uinterface.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -13,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,12 +28,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composetutorial.R
+import com.example.composetutorial.classes.Contact
 import com.example.composetutorial.data.ContactData
 
 @Composable
 fun ConversationsScreen(
-    onNextButtonClicked: () -> Unit,
+    contactClicked: (Contact) -> Unit,
     contacts: List<Contact>){
     Surface(modifier = Modifier
         .fillMaxSize(),
@@ -45,7 +42,7 @@ fun ConversationsScreen(
             .fillMaxSize()
             .padding(start = 8.dp, top = 8.dp)) {
             items(contacts){
-                contact -> ContactCard(contact, onNextButtonClicked)
+                contact -> ContactCard(contact, contactClicked)
                 HorizontalDivider(color = Color.LightGray, thickness = 0.5.dp, modifier = Modifier.padding(start = 64.dp))
             }
         }
@@ -54,21 +51,17 @@ fun ConversationsScreen(
 
 //}
 
-data class Contact(val name: String, val profilePicture: Int, val messages: List<Message>)
 
 @Composable
 fun ContactCard(
     contact: Contact,
-    onNextButtonClicked: () -> Unit){
-
-    var isExpanded by remember { mutableStateOf(false) }
+    contactClicked: (Contact) -> Unit){
 
     Row(modifier = Modifier
         .padding(vertical = 16.dp)
         .fillMaxWidth()
         .clickable {
-
-            onNextButtonClicked()}) {
+            contactClicked(contact)}) {
         Image(
             painter = painterResource(contact.profilePicture),
             contentDescription = "Contact profile picture",
@@ -90,13 +83,13 @@ fun ContactCard(
 @Preview
 @Composable
 fun ConversationsScreenPreview(){
-    ConversationsScreen(onNextButtonClicked = {}, ContactData.contactSample)
+    ConversationsScreen(contactClicked = {}, ContactData.contactSample)
 }
 
 
 
 /*
-        Button(onClick = onNextButtonClicked) {
+        Button(onClick = contactClicked) {
             Text("Lexi")
         }
          */

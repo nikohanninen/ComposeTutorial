@@ -1,6 +1,5 @@
 package com.example.composetutorial
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -29,8 +28,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.composetutorial.data.ContactData
 import com.example.composetutorial.uinterface.screens.ConversationsScreen
 import com.example.composetutorial.uinterface.screens.ConversationScreen
-import com.example.composetutorial.data.SampleData
-import com.example.composetutorial.uinterface.screens.Contact
 
 enum class ComposeTutorialScreen() {
     Conversations,
@@ -69,6 +66,7 @@ fun ComposeTutorialAppBar(
 
 @Composable
 fun ComposeTutorialApp(
+    viewModel: ContactViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
 
@@ -77,9 +75,8 @@ fun ComposeTutorialApp(
         value = backStackEntry?.destination?.route ?: ComposeTutorialScreen.Conversations.name
     )
 
-    var selectedContact = ContactData.contactSample[0]
-
     Scaffold(
+        containerColor = Color.Black,
         topBar = {
             ComposeTutorialAppBar(
                 currentScreen = currentScreen,
@@ -99,13 +96,13 @@ fun ComposeTutorialApp(
                     startDestination = ComposeTutorialScreen.Conversations.name
                 ) {
                     composable(route = ComposeTutorialScreen.Conversations.name){
-                        ConversationsScreen(contacts = ContactData.contactSample,onNextButtonClicked = {
-
+                        ConversationsScreen(contacts = ContactData.contactSample,contactClicked = {
+                            contact -> viewModel.changeSelectedContact(contact)
                             navController.navigate(ComposeTutorialScreen.Conversation.name)})
                     }
                     composable(route = ComposeTutorialScreen.Conversation.name){
-                        ConversationScreen(selectedContact,
-                            onNextButtonClicked = {})
+                        ConversationScreen(viewModel.selectedContact,
+                            contactClicked = {})
                     }
                 }
             }

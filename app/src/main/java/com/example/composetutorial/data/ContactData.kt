@@ -1,7 +1,7 @@
 package com.example.composetutorial.data
 
 import com.example.composetutorial.R
-import com.example.composetutorial.uinterface.screens.Contact
+import com.example.composetutorial.classes.Contact
 
 object ContactData {
 
