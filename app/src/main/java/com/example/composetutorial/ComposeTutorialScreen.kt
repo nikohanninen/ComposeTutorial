@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,12 +27,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.composetutorial.data.ContactData
+import com.example.composetutorial.uinterface.screens.AccountScreen
 import com.example.composetutorial.uinterface.screens.ConversationsScreen
 import com.example.composetutorial.uinterface.screens.ConversationScreen
 
 enum class ComposeTutorialScreen() {
     Conversations,
-    Conversation
+    Conversation,
+    Account
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +43,8 @@ fun ComposeTutorialAppBar(
     currentScreen: ComposeTutorialScreen,
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
-    title: String
+    title: String,
+    navController : NavHostController
 ){
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -60,6 +64,15 @@ fun ComposeTutorialAppBar(
                 }
             }
         },
+        actions = {
+            IconButton(onClick = {navController.navigate(ComposeTutorialScreen.Account.name)}) {
+                Icon(
+                    imageVector = Icons.Filled.AccountCircle,
+                    contentDescription = "account icon"
+                )
+            }
+        },
+
         modifier = Modifier.height(80.dp)
     )
 }
@@ -82,7 +95,8 @@ fun ComposeTutorialApp(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() },
-                title = currentScreen.name
+                title = currentScreen.name,
+                navController = navController
             )
         }
     ) {
@@ -103,6 +117,9 @@ fun ComposeTutorialApp(
                     composable(route = ComposeTutorialScreen.Conversation.name){
                         ConversationScreen(viewModel.selectedContact,
                             contactClicked = {})
+                    }
+                    composable(route = ComposeTutorialScreen.Account.name){
+                        AccountScreen()
                     }
                 }
             }
