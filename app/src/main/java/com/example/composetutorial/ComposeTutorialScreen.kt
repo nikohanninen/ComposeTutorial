@@ -42,6 +42,7 @@ enum class ComposeTutorialScreen() {
 fun ComposeTutorialAppBar(
     currentScreen: ComposeTutorialScreen,
     canNavigateBack: Boolean,
+    showAccountButton: Boolean,
     navigateUp: () -> Unit,
     title: String,
     navController : NavHostController
@@ -65,11 +66,13 @@ fun ComposeTutorialAppBar(
             }
         },
         actions = {
-            IconButton(onClick = {navController.navigate(ComposeTutorialScreen.Account.name)}) {
-                Icon(
-                    imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "account icon"
-                )
+            if(showAccountButton){
+                IconButton(onClick = {navController.navigate(ComposeTutorialScreen.Account.name)}) {
+                    Icon(
+                        imageVector = Icons.Filled.AccountCircle,
+                        contentDescription = "account icon"
+                    )
+                }
             }
         },
 
@@ -80,6 +83,7 @@ fun ComposeTutorialAppBar(
 @Composable
 fun ComposeTutorialApp(
     viewModel: ContactViewModel = viewModel(),
+    accountViewModel: AccountViewModel = viewModel(factory = AppViewModelProvider.Factory),
     navController: NavHostController = rememberNavController()
 ) {
 
@@ -94,6 +98,7 @@ fun ComposeTutorialApp(
             ComposeTutorialAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
+                showAccountButton = currentScreen == ComposeTutorialScreen.Conversations,
                 navigateUp = { navController.navigateUp() },
                 title = currentScreen.name,
                 navController = navController
@@ -112,14 +117,15 @@ fun ComposeTutorialApp(
                     composable(route = ComposeTutorialScreen.Conversations.name){
                         ConversationsScreen(contacts = ContactData.contactSample,contactClicked = {
                             contact -> viewModel.changeSelectedContact(contact)
-                            navController.navigate(ComposeTutorialScreen.Conversation.name)})
+                            navController.navigate(ComposeTutorialScreen.Conversation.name)},
+                            accountViewModel = accountViewModel)
                     }
                     composable(route = ComposeTutorialScreen.Conversation.name){
                         ConversationScreen(viewModel.selectedContact,
                             contactClicked = {})
                     }
                     composable(route = ComposeTutorialScreen.Account.name){
-                        AccountScreen()
+                        AccountScreen(accountViewModel)
                     }
                 }
             }

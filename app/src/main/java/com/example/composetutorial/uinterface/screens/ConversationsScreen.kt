@@ -1,5 +1,7 @@
 package com.example.composetutorial.uinterface.screens
 
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -25,32 +27,63 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import com.example.composetutorial.AccountViewModel
+import com.example.composetutorial.R
 import com.example.composetutorial.classes.Contact
 import com.example.composetutorial.data.ContactData
 
 @Composable
 fun ConversationsScreen(
     contactClicked: (Contact) -> Unit,
-    contacts: List<Contact>){
-    Surface(modifier = Modifier
-        .fillMaxSize(),
-        color = Color.Black) {
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 8.dp, top = 8.dp)) {
-            items(contacts){
-                contact -> ContactCard(contact, contactClicked)
-                HorizontalDivider(color = Color.LightGray, thickness = 0.5.dp, modifier = Modifier.padding(start = 64.dp))
+    contacts: List<Contact>,
+    accountViewModel: AccountViewModel){
+    Column() {
+        Surface(modifier = Modifier,
+            color = Color.Black) {
+            LazyColumn(modifier = Modifier
+                .padding(start = 8.dp, top = 8.dp)) {
+                items(contacts){
+                        contact -> ContactCard(contact, contactClicked)
+                    HorizontalDivider(color = Color.LightGray, thickness = 0.5.dp, modifier = Modifier.padding(start = 64.dp))
+                }
             }
+    }
+        AccountCard(accountViewModel)
+    }
+    }
+
+@Composable
+fun AccountCard(
+    viewModel: AccountViewModel
+){
+    Row(modifier = Modifier
+        .padding(vertical = 16.dp)
+        .fillMaxWidth()
+            ) {
+        AsyncImage(
+            model = viewModel.accountState.profilePicture,
+            placeholder = painterResource(R.drawable.profile_picture),
+            contentDescription = "Account profile picture",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(160.dp)
+                .clip(CircleShape)
+                .border(
+                    1.5.dp,
+                    MaterialTheme.colorScheme.primary,
+                    CircleShape
+                )
+        )
+        Column(modifier = Modifier.padding(start = 8.dp)) {
+            Text(viewModel.accountState.name, fontSize = 22.sp, color = Color.White)
         }
     }
-    }
-
-//}
-
+}
 
 @Composable
 fun ContactCard(
@@ -80,11 +113,14 @@ fun ContactCard(
     }
 }
 
+/*
 @Preview
 @Composable
 fun ConversationsScreenPreview(){
     ConversationsScreen(contactClicked = {}, ContactData.contactSample)
 }
+
+ */
 
 
 
