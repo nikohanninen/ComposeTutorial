@@ -90,4 +90,6 @@ dependencies {
     ksp("androidx.room:room-compiler:${room_version}")
     implementation("androidx.room:room-ktx:${room_version}")
 
+    implementation("com.google.accompanist:accompanist-permissions:0.31.1-alpha")
+
 }

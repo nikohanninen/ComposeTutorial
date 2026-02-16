@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -41,7 +42,8 @@ import com.example.composetutorial.data.ContactData
 fun ConversationsScreen(
     contactClicked: (Contact) -> Unit,
     contacts: List<Contact>,
-    accountViewModel: AccountViewModel){
+    accountViewModel: AccountViewModel,
+    sensorClicked: () -> Unit){
     Column() {
         Surface(modifier = Modifier,
             color = Color.Black) {
@@ -54,6 +56,9 @@ fun ConversationsScreen(
             }
     }
         AccountCard(accountViewModel)
+        Button(onClick = sensorClicked) {
+            Text("Sensor")
+        }
     }
     }
 

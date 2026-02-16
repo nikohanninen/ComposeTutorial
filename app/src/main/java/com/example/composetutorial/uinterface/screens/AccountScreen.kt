@@ -1,5 +1,7 @@
 package com.example.composetutorial.uinterface.screens
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -22,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,13 +49,26 @@ import com.example.composetutorial.R
 import com.example.composetutorial.data.ContactData
 import kotlinx.coroutines.launch
 import androidx.core.net.toUri
+import com.example.composetutorial.NotificationHandler
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import java.io.File
 
-
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun AccountScreen(
-    viewModel: AccountViewModel
+    viewModel: AccountViewModel,
+    context: Context
 ) {
+    val postNotificationPermission = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
+    val notificationHandler = NotificationHandler(context)
+
+    LaunchedEffect(key1 = true) {
+        if (!postNotificationPermission.status.isGranted){
+            postNotificationPermission.launchPermissionRequest()
+        }
+    }
     val coroutineScope = rememberCoroutineScope()
 
     val defaultPictureUrl =
@@ -122,6 +138,12 @@ fun AccountScreen(
             onClick = { coroutineScope.launch { viewModel.clearAccount() } }
         ) {
             Text("Delete Account")
+        }
+
+        Button(
+            onClick = { notificationHandler.showSimpleNotification() }
+        ) {
+            Text("Show notification")
         }
     }
 }

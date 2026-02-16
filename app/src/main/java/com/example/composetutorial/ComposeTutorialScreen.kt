@@ -1,5 +1,6 @@
 package com.example.composetutorial
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -30,11 +31,13 @@ import com.example.composetutorial.data.ContactData
 import com.example.composetutorial.uinterface.screens.AccountScreen
 import com.example.composetutorial.uinterface.screens.ConversationsScreen
 import com.example.composetutorial.uinterface.screens.ConversationScreen
+import com.example.composetutorial.uinterface.screens.SensorScreen
 
 enum class ComposeTutorialScreen() {
     Conversations,
     Conversation,
-    Account
+    Account,
+    Sensor
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +87,8 @@ fun ComposeTutorialAppBar(
 fun ComposeTutorialApp(
     viewModel: ContactViewModel = viewModel(),
     accountViewModel: AccountViewModel = viewModel(factory = AppViewModelProvider.Factory),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    context: Context,
 ) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -118,14 +122,20 @@ fun ComposeTutorialApp(
                         ConversationsScreen(contacts = ContactData.contactSample,contactClicked = {
                             contact -> viewModel.changeSelectedContact(contact)
                             navController.navigate(ComposeTutorialScreen.Conversation.name)},
-                            accountViewModel = accountViewModel)
+                            accountViewModel = accountViewModel,
+                            sensorClicked = {
+                                navController.navigate(ComposeTutorialScreen.Sensor.name)
+                            })
                     }
                     composable(route = ComposeTutorialScreen.Conversation.name){
                         ConversationScreen(viewModel.selectedContact,
                             contactClicked = {})
                     }
                     composable(route = ComposeTutorialScreen.Account.name){
-                        AccountScreen(accountViewModel)
+                        AccountScreen(accountViewModel, context)
+                    }
+                    composable(route = ComposeTutorialScreen.Sensor.name){
+                        SensorScreen(context)
                     }
                 }
             }

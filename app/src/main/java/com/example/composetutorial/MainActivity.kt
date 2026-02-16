@@ -39,9 +39,10 @@ import com.example.composetutorial.ui.theme.ComposeTutorialTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
+            ComposeTutorialApp(context = this)
             ComposeTutorialTheme {
-                ComposeTutorialApp()
             }
         }
     }
