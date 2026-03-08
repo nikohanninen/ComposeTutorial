@@ -7,12 +7,13 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.composetutorial.classes.TypeConverter
 
-@Database(entities = [Account::class], version = 1)
+@Database(entities = [Account::class, Message::class], version = 1)
 
 @TypeConverters(TypeConverter::class)
 abstract class AccountDatabase : RoomDatabase() {
 
     abstract fun accountDao(): AccountDao
+    abstract fun messageDao(): MessageDao
 
     companion object {
         @Volatile

@@ -122,17 +122,19 @@ fun ComposeTutorialApp(
                         ConversationsScreen(contacts = ContactData.contactSample,contactClicked = {
                             contact -> viewModel.changeSelectedContact(contact)
                             navController.navigate(ComposeTutorialScreen.Conversation.name)},
-                            accountViewModel = accountViewModel,
-                            sensorClicked = {
-                                navController.navigate(ComposeTutorialScreen.Sensor.name)
-                            })
+                            accountViewModel = accountViewModel)
                     }
                     composable(route = ComposeTutorialScreen.Conversation.name){
                         ConversationScreen(viewModel.selectedContact,
                             contactClicked = {})
                     }
                     composable(route = ComposeTutorialScreen.Account.name){
-                        AccountScreen(accountViewModel, context)
+                        AccountScreen(
+                            accountViewModel,
+                            context,
+                            sensorClicked = {
+                                navController.navigate(ComposeTutorialScreen.Sensor.name)
+                            })
                     }
                     composable(route = ComposeTutorialScreen.Sensor.name){
                         SensorScreen(context)

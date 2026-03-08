@@ -59,7 +59,8 @@ import java.io.File
 @Composable
 fun AccountScreen(
     viewModel: AccountViewModel,
-    context: Context
+    context: Context,
+    sensorClicked: () -> Unit
 ) {
     val postNotificationPermission = rememberPermissionState(permission = Manifest.permission.POST_NOTIFICATIONS)
     val notificationHandler = NotificationHandler(context)
@@ -129,7 +130,8 @@ fun AccountScreen(
         )
 
         Button(
-            onClick = { coroutineScope.launch { viewModel.saveAccount() } }
+            onClick = { coroutineScope.launch { viewModel.saveAccount() } },
+            modifier = Modifier.padding(top = 4.dp)
         ) {
             Text("Save")
         }
@@ -144,6 +146,9 @@ fun AccountScreen(
             onClick = { notificationHandler.showSimpleNotification() }
         ) {
             Text("Show notification")
+        }
+        Button(onClick = sensorClicked) {
+            Text("Sensor")
         }
     }
 }

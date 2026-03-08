@@ -42,8 +42,7 @@ import com.example.composetutorial.data.ContactData
 fun ConversationsScreen(
     contactClicked: (Contact) -> Unit,
     contacts: List<Contact>,
-    accountViewModel: AccountViewModel,
-    sensorClicked: () -> Unit){
+    accountViewModel: AccountViewModel){
     Column() {
         Surface(modifier = Modifier,
             color = Color.Black) {
@@ -55,10 +54,6 @@ fun ConversationsScreen(
                 }
             }
     }
-        AccountCard(accountViewModel)
-        Button(onClick = sensorClicked) {
-            Text("Sensor")
-        }
     }
     }
 

@@ -11,6 +11,12 @@ object AppViewModelProvider {
             val application = tutorialApplication()
             AccountViewModel(tutorialApplication().container.accountRepository, application.applicationContext)
         }
+
+        initializer {
+            MessageViewModel(
+                tutorialApplication().container.messageRepository
+            )
+        }
     }
 }
 
